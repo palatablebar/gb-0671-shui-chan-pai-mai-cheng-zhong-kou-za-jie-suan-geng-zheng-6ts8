@@ -5,13 +5,13 @@ from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from app.config import ROOT, META, MODULES, DB_PATH
 from app.errors import BusinessError
-from app.engine import evaluate
+from app.admission_ledger import evaluate_live
 from app import store
 from app.archive import serialize
 
 @asynccontextmanager
 async def lifespan(app):
-    store.save(DB_PATH,evaluate())
+    store.save(DB_PATH,evaluate_live())
     yield
 app=FastAPI(title=META['title'],lifespan=lifespan)
 app.mount('/static',StaticFiles(directory=str(ROOT/'app/static')),name='static')
@@ -26,13 +26,13 @@ def health():
     return {'status':'ok','project':META['short']}
 @app.post('/api/runs')
 def create(payload:dict=Body(default={})):
-    return store.save(DB_PATH,evaluate(payload))
+    return store.save(DB_PATH,evaluate_live(payload))
 @app.post('/api/runs/{run_id}/rerun')
 def rerun(run_id:str):
     previous=store.get(DB_PATH,run_id)
     if 'input_snapshot' not in previous:
         raise BusinessError('INPUT_SNAPSHOT_MISSING','旧批缺少源快照，请重新导入')
-    return store.save(DB_PATH,evaluate({'dataset':previous['source']},snapshot=previous['input_snapshot']))
+    return store.save(DB_PATH,evaluate_live({'dataset':previous['source']},snapshot=previous['input_snapshot']))
 @app.get('/api/runs')
 def runs():
     return store.history(DB_PATH)

@@ -1,0 +1,442 @@
+{
+  "schema": "admission/v1",
+  "scope": "donggang-20261118",
+  "timezone": "Asia/Shanghai",
+  "as_of": "2026-11-18T06:25:00+08:00",
+  "policy": "staged",
+  "decision_note": "05:18补录3号秤异常；05:40才收到2号秤异常记录。首拍按已知记录切分场次。",
+  "scales": [
+    {
+      "scale_id": "S1",
+      "name": "1号秤",
+      "status": "正常"
+    },
+    {
+      "scale_id": "S2",
+      "name": "2号秤",
+      "status": "异常记录迟到"
+    },
+    {
+      "scale_id": "S3",
+      "name": "3号秤",
+      "status": "校准异常已补录"
+    }
+  ],
+  "lots": [
+    {
+      "lot_id": "LOT-A",
+      "lot_name": "鲜活区"
+    },
+    {
+      "lot_id": "LOT-B",
+      "lot_name": "冰鲜区"
+    },
+    {
+      "lot_id": "LOT-C",
+      "lot_name": "活鲜区"
+    },
+    {
+      "lot_id": "LOT-D",
+      "lot_name": "贝类区"
+    },
+    {
+      "lot_id": "LOT-E",
+      "lot_name": "待核区"
+    }
+  ],
+  "packages": [
+    {
+      "ticket": "00001",
+      "lot_id": "LOT-A"
+    },
+    {
+      "ticket": "00002",
+      "lot_id": "LOT-A"
+    },
+    {
+      "ticket": "00003",
+      "lot_id": "LOT-A"
+    },
+    {
+      "ticket": "00004",
+      "lot_id": "LOT-A"
+    },
+    {
+      "ticket": "00005",
+      "lot_id": "LOT-A"
+    },
+    {
+      "ticket": "00006",
+      "lot_id": "LOT-B"
+    },
+    {
+      "ticket": "00007",
+      "lot_id": "LOT-B"
+    },
+    {
+      "ticket": "00008",
+      "lot_id": "LOT-B"
+    },
+    {
+      "ticket": "00009",
+      "lot_id": "LOT-B"
+    },
+    {
+      "ticket": "00010",
+      "lot_id": "LOT-B"
+    },
+    {
+      "ticket": "00011",
+      "lot_id": "LOT-C"
+    },
+    {
+      "ticket": "00012",
+      "lot_id": "LOT-C"
+    },
+    {
+      "ticket": "00013",
+      "lot_id": "LOT-C"
+    },
+    {
+      "ticket": "00014",
+      "lot_id": "LOT-C"
+    },
+    {
+      "ticket": "00015",
+      "lot_id": "LOT-C"
+    },
+    {
+      "ticket": "00016",
+      "lot_id": "LOT-D"
+    },
+    {
+      "ticket": "00017",
+      "lot_id": "LOT-D"
+    },
+    {
+      "ticket": "00018",
+      "lot_id": "LOT-D"
+    },
+    {
+      "ticket": "00019",
+      "lot_id": "LOT-D"
+    },
+    {
+      "ticket": "00020",
+      "lot_id": "LOT-D"
+    },
+    {
+      "ticket": "00904",
+      "lot_id": "LOT-E"
+    },
+    {
+      "ticket": "00905",
+      "lot_id": "LOT-E"
+    },
+    {
+      "ticket": "00901",
+      "lot_id": "LOT-E"
+    },
+    {
+      "ticket": "00902",
+      "lot_id": "LOT-E"
+    },
+    {
+      "ticket": "00903",
+      "lot_id": "LOT-E"
+    }
+  ],
+  "weighings": [
+    {
+      "evidence_id": "W-00001-ORIG",
+      "ticket": "00001",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T05:00:00+08:00",
+      "recorded_at": "2026-11-18T05:00:30+08:00"
+    },
+    {
+      "evidence_id": "W-00002-ORIG",
+      "ticket": "00002",
+      "kind": "original",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T04:45:00+08:00",
+      "recorded_at": "2026-11-18T04:45:30+08:00"
+    },
+    {
+      "evidence_id": "W-00003-ORIG",
+      "ticket": "00003",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T04:35:00+08:00",
+      "recorded_at": "2026-11-18T04:35:30+08:00"
+    },
+    {
+      "evidence_id": "W-00004-ORIG",
+      "ticket": "00004",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:40:00+08:00",
+      "recorded_at": "2026-11-18T04:40:30+08:00"
+    },
+    {
+      "evidence_id": "W-00005-ORIG",
+      "ticket": "00005",
+      "kind": "original",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T04:50:00+08:00",
+      "recorded_at": "2026-11-18T04:50:30+08:00"
+    },
+    {
+      "evidence_id": "W-00006-ORIG",
+      "ticket": "00006",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T04:42:00+08:00",
+      "recorded_at": "2026-11-18T04:42:30+08:00"
+    },
+    {
+      "evidence_id": "W-00007-ORIG",
+      "ticket": "00007",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:44:00+08:00",
+      "recorded_at": "2026-11-18T04:44:30+08:00"
+    },
+    {
+      "evidence_id": "W-00008-ORIG",
+      "ticket": "00008",
+      "kind": "original",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T05:02:00+08:00",
+      "recorded_at": "2026-11-18T05:02:30+08:00"
+    },
+    {
+      "evidence_id": "W-00009-ORIG",
+      "ticket": "00009",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:55:00+08:00",
+      "recorded_at": "2026-11-18T04:55:30+08:00"
+    },
+    {
+      "evidence_id": "W-00010-ORIG",
+      "ticket": "00010",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T04:48:00+08:00",
+      "recorded_at": "2026-11-18T04:48:30+08:00"
+    },
+    {
+      "evidence_id": "W-00011-ORIG",
+      "ticket": "00011",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:38:00+08:00",
+      "recorded_at": "2026-11-18T04:38:30+08:00"
+    },
+    {
+      "evidence_id": "W-00012-ORIG",
+      "ticket": "00012",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T04:52:00+08:00",
+      "recorded_at": "2026-11-18T04:52:30+08:00"
+    },
+    {
+      "evidence_id": "W-00013-ORIG",
+      "ticket": "00013",
+      "kind": "original",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T04:58:00+08:00",
+      "recorded_at": "2026-11-18T04:58:30+08:00"
+    },
+    {
+      "evidence_id": "W-00014-ORIG",
+      "ticket": "00014",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:46:00+08:00",
+      "recorded_at": "2026-11-18T04:46:30+08:00"
+    },
+    {
+      "evidence_id": "W-00015-ORIG",
+      "ticket": "00015",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T05:04:00+08:00",
+      "recorded_at": "2026-11-18T05:04:30+08:00"
+    },
+    {
+      "evidence_id": "W-00016-ORIG",
+      "ticket": "00016",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T05:08:00+08:00",
+      "recorded_at": "2026-11-18T05:08:30+08:00"
+    },
+    {
+      "evidence_id": "W-00017-ORIG",
+      "ticket": "00017",
+      "kind": "original",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T04:55:00+08:00",
+      "recorded_at": "2026-11-18T04:55:30+08:00"
+    },
+    {
+      "evidence_id": "W-00018-ORIG",
+      "ticket": "00018",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T04:57:00+08:00",
+      "recorded_at": "2026-11-18T04:57:30+08:00"
+    },
+    {
+      "evidence_id": "W-00019-ORIG",
+      "ticket": "00019",
+      "kind": "original",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T04:42:00+08:00",
+      "recorded_at": "2026-11-18T04:42:30+08:00"
+    },
+    {
+      "evidence_id": "W-00002-RW1",
+      "ticket": "00002",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T05:10:00+08:00",
+      "recorded_at": "2026-11-18T05:12:00+08:00",
+      "gross_kg": "102",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00005-RW1",
+      "ticket": "00005",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T05:14:00+08:00",
+      "recorded_at": "2026-11-18T05:16:00+08:00",
+      "gross_kg": "105",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00013-RW1",
+      "ticket": "00013",
+      "kind": "reweigh",
+      "scale_id": "S2",
+      "weighed_at": "2026-11-18T05:16:00+08:00",
+      "recorded_at": "2026-11-18T05:18:00+08:00",
+      "gross_kg": "113",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00008-RW1",
+      "ticket": "00008",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T05:48:00+08:00",
+      "recorded_at": "2026-11-18T05:50:00+08:00",
+      "gross_kg": "108",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00001-RW1",
+      "ticket": "00001",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T06:05:00+08:00",
+      "recorded_at": "2026-11-18T06:06:00+08:00",
+      "gross_kg": "115",
+      "tare_kg": "15"
+    },
+    {
+      "evidence_id": "W-00020-ORIG",
+      "ticket": "00020",
+      "kind": "original",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T05:34:00+08:00",
+      "recorded_at": "2026-11-18T05:35:00+08:00"
+    },
+    {
+      "evidence_id": "W-00017-RW1",
+      "ticket": "00017",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T06:10:00+08:00",
+      "recorded_at": "2026-11-18T06:12:00+08:00",
+      "gross_kg": "117",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00009-RW1",
+      "ticket": "00009",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T06:02:00+08:00",
+      "recorded_at": "2026-11-18T06:04:00+08:00",
+      "gross_kg": "109",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00016-RW1",
+      "ticket": "00016",
+      "kind": "reweigh",
+      "scale_id": "S1",
+      "weighed_at": "2026-11-18T06:06:00+08:00",
+      "recorded_at": "2026-11-18T06:08:00+08:00",
+      "gross_kg": "116",
+      "tare_kg": "10"
+    },
+    {
+      "evidence_id": "W-00020-RW1",
+      "ticket": "00020",
+      "kind": "reweigh",
+      "scale_id": "S3",
+      "weighed_at": "2026-11-18T05:55:00+08:00",
+      "recorded_at": "2026-11-18T05:57:00+08:00",
+      "gross_kg": "120",
+      "tare_kg": "10"
+    }
+  ],
+  "calibrations": [
+    {
+      "record_id": "CAL-S1-0420",
+      "scale_id": "S1",
+      "kind": "verified",
+      "from": "2026-11-18T04:00:00+08:00",
+      "to": "2026-11-18T04:30:00+08:00",
+      "recorded_at": "2026-11-18T04:20:00+08:00",
+      "note": "例行校验通过"
+    },
+    {
+      "record_id": "CAL-S3-0518",
+      "scale_id": "S3",
+      "kind": "anomaly",
+      "from": "2026-11-18T04:30:00+08:00",
+      "to": "2026-11-18T05:05:00+08:00",
+      "recorded_at": "2026-11-18T05:18:00+08:00",
+      "note": "3号秤校准异常，开拍前补录"
+    },
+    {
+      "record_id": "CAL-S2-0540",
+      "scale_id": "S2",
+      "kind": "anomaly",
+      "from": "2026-11-18T04:50:00+08:00",
+      "to": "2026-11-18T05:10:00+08:00",
+      "recorded_at": "2026-11-18T05:40:00+08:00",
+      "note": "2号秤异常记录迟到到达"
+    }
+  ],
+  "sessions": [
+    {
+      "session_id": "OPEN-0530",
+      "label": "首拍",
+      "opened_at": "2026-11-18T05:30:00+08:00"
+    },
+    {
+      "session_id": "OPEN-0620",
+      "label": "补拍",
+      "opened_at": "2026-11-18T06:20:00+08:00"
+    }
+  ]
+}

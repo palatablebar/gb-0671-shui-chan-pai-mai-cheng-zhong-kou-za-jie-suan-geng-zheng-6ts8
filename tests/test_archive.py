@@ -17,3 +17,10 @@ def test_bundle_evidence_real(sample):
     z=zipfile.ZipFile(io.BytesIO(serialize(sample)));data=json.loads(z.read('evidence.json'));assert len(data['quarantine'])==8
 def test_bundle_manifest_real(sample):
     z=zipfile.ZipFile(io.BytesIO(serialize(sample)));assert json.loads(z.read('manifest.json'))['run_id']==sample['manifest']['run_id']
+def test_bundle_admission_evidence(sample):
+    z=zipfile.ZipFile(io.BytesIO(serialize(sample)));data=json.loads(z.read('evidence.json'))
+    assert len(data['admission']['rows'])==25
+    assert len(data['admission']['sessions'])==2
+    evidence={row['evidence_id']:row for row in data['admission']['weighing_evidence']}
+    assert evidence['W-00002-ORIG']['retained']=='是'
+    assert evidence['W-00002-RW1']['usage']=='已用作依据'

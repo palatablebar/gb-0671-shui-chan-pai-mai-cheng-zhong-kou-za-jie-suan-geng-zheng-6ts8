@@ -2,18 +2,28 @@ import sqlite3, json
 from pathlib import Path
 from app.errors import BusinessError
 
+SCHEMA='''CREATE TABLE IF NOT EXISTS runs (id TEXT PRIMARY KEY, digest TEXT UNIQUE NOT NULL, result TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 1, status TEXT NOT NULL DEFAULT '待复核')'''
+LEDGER='''CREATE TABLE IF NOT EXISTS admission_ledger (
+ scope TEXT NOT NULL, session_id TEXT NOT NULL, ticket TEXT NOT NULL,
+ basis TEXT NOT NULL, evidence_id TEXT NOT NULL, row_json TEXT NOT NULL DEFAULT '',
+ first_run_id TEXT NOT NULL DEFAULT '', recorded_at TEXT NOT NULL DEFAULT '',
+ PRIMARY KEY (scope, session_id, ticket))'''
+
 def connect(path):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     con=sqlite3.connect(path,timeout=15)
     con.row_factory=sqlite3.Row
     con.execute('PRAGMA journal_mode=WAL')
-    con.execute("CREATE TABLE IF NOT EXISTS runs (id TEXT PRIMARY KEY, digest TEXT UNIQUE NOT NULL, result TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 1, status TEXT NOT NULL DEFAULT '待复核')")
+    con.execute(SCHEMA)
+    con.execute(LEDGER)
     return con
 
 def save(path, result):
     run_id=result['manifest']['run_id']
     with connect(path) as con:
         con.execute('INSERT OR IGNORE INTO runs(id,digest,result) VALUES(?,?,?)', (run_id,result['manifest']['sha256'],json.dumps(result,ensure_ascii=False)))
+    from app.admission_ledger import record
+    record(path,result)
     return get(path,run_id)
 
 def get(path, run_id):

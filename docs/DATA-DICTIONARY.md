@@ -5,3 +5,26 @@
 每票第一版不填写 replaces。后续版本只能替代当前生效版，分支或缺基版整票阻断结算。已支付额为各版本中最大累计已付值，待付=最终应付−累计已付；负待付表示待收回。
 同编号同原值仅计一次；同编号不同原值全部隔离。空文件、全空行和仅表头分别报错。原始输入计数包括空行及重复表头，对账会分别解释。
 归档封存保存逐版证据、隔离原因和运行摘要，非支付执行系统。数据使用虚构编号，不连接实际支付渠道。
+
+## 开拍准入输入（`sample_data/admission.json`）
+
+| 字段 | 含义 |
+|---|---|
+| `scope` | 交易日隔离键；冻结台账按「交易日 + 源文件摘要」分组，不同交易日/源文件不互相串用 |
+| `as_of` | 决策时点；晚于该时点的场次只出现在时间线上，不提前上板 |
+| `policy` | `staged` 分场准入 / `whole` 整场等待 |
+| `lots[]` | 批次 `lot_id`、批次名；一个批次含多个货包 |
+| `packages[]` | `ticket` 与所属 `lot_id`；票号对应毛皮配对后的票 |
+| `weighings[]` | 称重证据：`evidence_id`、`ticket`、`kind`（`original` 原始 / `reweigh` 复秤）、`scale_id`、`weighed_at` 称重时点、`recorded_at` 记录到达时点；复秤另带 `gross_kg`、`tare_kg` |
+| `calibrations[]` | 校准记录：`kind`（`anomaly` 异常 / `verified` 正常）、异常区间 `from`/`to`、`recorded_at` 补录到达时点 |
+| `sessions[]` | 场次 `session_id`、标签、`opened_at` 开拍时点 |
+
+判定口径：
+
+1. 场次只使用 `recorded_at <= opened_at` 的校准记录与称重证据。迟到记录不参与该场判定。
+2. 原称重 `weighed_at` 落在同秤台异常区间内即视为受影响；必须有一条不受异常区间覆盖、且在场次开拍前到达的复秤，方可上板，否则暂缓。
+3. 毛皮配对已隔离的票号不进入准入，`blockers=PAIRING_QUARANTINED`。
+4. `whole` 策略下，只要还有「有配对但未确认」的货包，该场不开拍；永久配对隔离的货包不参与等待，也不进入竞价范围。
+5. 上板货包必须能追到唯一的 `evidence_id`，复秤优先于原称重；原始证据全部保留，只标注用途。
+6. 晚于 `as_of` 的场次不参与当天准入结论，只在时间线显示为「待开拍」。
+7. 已开拍结论写入 `admission_ledger(scope,session_id,ticket,basis,evidence_id,row_json,...)`，重跑按 `row_json` 整行恢复；台账不进入批次摘要，批号仍由源字节+参数+规则版本决定。

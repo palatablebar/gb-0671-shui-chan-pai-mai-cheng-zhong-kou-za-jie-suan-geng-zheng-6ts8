@@ -7,6 +7,21 @@ document.querySelector('#filter').addEventListener('input',event=>{const text=ev
 const review=document.querySelector('#review');if(review)review.addEventListener('click',async()=>{try{const run=await fetch('/api/runs/'+review.dataset.id).then(r=>r.json());const result=await request('/api/runs/'+review.dataset.id+'/review',{revision:run.revision});feedback.textContent=result.status;}catch(error){feedback.textContent=error.message;}});
 const selected=new URL(location.href).searchParams.get('dataset');if(selected)document.querySelector('#dataset').value=selected;
 
+const switchButton=document.querySelector('#switch-policy');
+if(switchButton)switchButton.addEventListener('click',async()=>{
+  const policy=document.querySelector('#admission-policy').value;
+  switchButton.disabled=true;
+  feedback.textContent='切换准入方案…';
+  try{
+    const response=await fetch('/api/admission/switch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({run_id:document.body.dataset.runId,policy})});
+    const data=await response.json();
+    if(!response.ok)throw Error(data.detail||'切换失败');
+    feedback.textContent='已切换为'+data.admission.policy_label;
+    const url=new URL(location.href);url.searchParams.set('run_id',data.manifest.run_id);location.href=url;
+  }catch(error){feedback.textContent='切换失败，保留原准入状态：'+error.message;}
+  finally{switchButton.disabled=false;}
+});
+
 const filePicker=document.querySelector('#csv-file');
 if(filePicker){
  const editor=document.querySelector('#csv-text');

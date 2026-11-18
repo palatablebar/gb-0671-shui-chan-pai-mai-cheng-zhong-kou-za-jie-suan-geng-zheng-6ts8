@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% macro package_table(rows, empty) %}
+<div class="scroll"><table class="ledger"><thead><tr>
+<th>票号</th><th>批次</th><th>状态</th><th>场次</th><th>开拍时点</th><th>称重依据</th><th>依据号</th><th>秤台</th><th>称重时点</th><th>毛重 kg</th><th>皮重 kg</th><th>净重 kg</th><th>计价重 kg</th><th>应付 CNY</th><th>卡点</th><th>标记</th>
+</tr></thead><tbody>
+{% for row in rows %}<tr>
+<td class="num">{{ row.ticket }}</td><td>{{ row.lot_name }}</td>
+<td><span class="pill {{ 'ok' if row.status=='已开拍' else ('warn' if row.status!='配对隔离' else 'bad') }}">{{ row.status }}</span></td>
+<td>{{ row.session_label or '—' }}</td><td class="mono">{{ row.opened_at or '—' }}</td>
+<td>{{ row.basis_evidence or '无' }}</td><td class="mono">{{ row.evidence_id or '—' }}</td><td>{{ row.scale_id or '—' }}</td>
+<td class="mono">{{ row.weighed_at or '—' }}</td>
+<td class="num">{{ row.gross_kg or '—' }}</td><td class="num">{{ row.tare_kg or '—' }}</td><td class="num">{{ row.net_kg or '—' }}</td>
+<td class="num">{{ row.billable_kg or '—' }}</td><td class="num">{{ row.amount or '—' }}</td>
+<td>{{ row.blockers_text or '—' }}{% if row.ready_at %}<small class="hint">预计 {{ row.ready_at }}</small>{% endif %}</td>
+<td>{{ row.flags or '—' }}</td>
+</tr>{% else %}<tr><td colspan="16">{{ empty }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% endmacro %}
+{% block content %}
+<div class="notice">
+<span class="pill ok">{{ state.admission.policy_label }}</span>
+<strong>结论：</strong>首拍 {{ state.admission.sessions[0].opened_at if state.admission.sessions else '—' }} 按点开拍，{{ state.admission.metrics['首场可开拍'] }} 个货包上板；{{ state.admission.metrics['暂缓'] }} 个货包留在暂缓清单，复秤确认后才进下一场。已开拍货包冻结，迟到校准记录与迟到复秤只留档、不改换、不重复。
+<span class="hint">决策时点 {{ state.admission.as_of or '—' }}；该时点之后的场次只出现在时间线上，不提前上板。</span>
+{% if state.admission.switched_from %}<span class="hint">本次由批次 {{ state.admission.switched_from }} 切换方案；已开拍场次按冻结台账保留，新方案只作用于未开拍场次。</span>{% endif %}
+{% if state.admission.outside_packages and state.source=='dirty' %}<span class="hint">另有 {{ state.admission.outside_packages|length }} 个清单票号（{{ state.admission.outside_packages|join('、') }}）不在本批源文件中，未列入本次判定。</span>{% endif %}
+<a class="btn" href="#plan-compare">看两种开拍方案对比</a>
+</div>
+<div class="grid">
+<section class="panel primary-panel">
+<div class="panel__head"><h2>可竞价范围（已开拍）</h2><span>{{ state.admission.board|length }} 个货包</span></div>
+{{ package_table(state.admission.board, '暂无已开拍货包。') }}
+<div class="panel__bar">
+<label>样例 <select id="dataset"><option value="dirty" {% if state.source=='dirty' %}selected{% endif %}>现场脏批</option><option value="clean" {% if state.source=='clean' %}selected{% endif %}>核验清批</option><option value="legacy" {% if state.source=='legacy' %}selected{% endif %}>旧编码批</option></select></label>
+<label>准入方案 <select id="admission-policy"><option value="staged" {% if state.admission.policy=='staged' %}selected{% endif %}>分场准入</option><option value="whole" {% if state.admission.policy=='whole' %}selected{% endif %}>整场等待</option></select></label>
+<button id="switch-policy" class="btn">切换方案</button>
+<label>票号 <input id="filter" placeholder="筛选票号"></label>
+</div>
+</section>
+<div class="stack">
+<section class="panel">
+<div class="panel__head"><h2>暂缓清单（不可竞价）</h2><span>{{ state.admission.held|length }} 个货包</span></div>
+{{ package_table(state.admission.held, '没有暂缓货包。') }}
+</section>
+<section class="panel">
+<div class="panel__head"><h2>批次状态</h2><span>{{ state.admission.lots|length }} 批</span></div>
+<div class="scroll"><table class="ledger"><thead><tr><th>批次</th><th>状态</th><th>货包</th><th>已开拍</th><th>暂缓</th><th>首拍</th><th>卡点</th><th>票号</th></tr></thead><tbody>
+{% for lot in state.admission.lots %}<tr><td>{{ lot.lot_name }}</td>
+<td><span class="pill {{ 'ok' if lot.status=='可开拍' else ('warn' if lot.status=='部分暂缓' else 'bad') }}">{{ lot.status }}</span></td>
+<td class="num">{{ lot.packages }}</td><td class="num">{{ lot.admitted }}</td><td class="num">{{ lot.held }}</td><td class="num">{{ lot.first_session }}</td>
+<td>{{ lot.blockers_text or '—' }}</td><td class="mono">{{ lot.tickets }}</td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+</div>
+</div>
+<div class="grid">
+<section class="panel">
+<div class="panel__head"><h2>场次时间线</h2><span>{{ state.admission.sessions|length }} 场</span></div>
+<div class="scroll"><table class="ledger"><thead><tr><th>场次</th><th>开拍时点</th><th>状态</th><th>可开拍</th><th>暂缓</th></tr></thead><tbody>
+{% for session in state.admission.sessions %}<tr><td>{{ session.label }} <small class="mono">{{ session.session_id }}</small></td>
+<td class="mono">{{ session.opened_at }}</td><td><span class="pill {{ 'ok' if session.status=='已开拍' else ('warn' if session.status=='待开拍' else 'bad') }}">{{ session.status }}</span></td>
+<td class="num">{{ session.admitted|length }}</td><td>{{ session.held|join('、') or '—' }}</td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+<section class="panel" id="plan-compare">
+<div class="panel__head"><h2>方案对比</h2><span>同一批证据的反事实推演</span></div>
+<div class="scroll"><table class="ledger"><thead><tr><th>方案</th><th>首场</th><th>当日</th><th>第一场时点</th><th>说明</th></tr></thead><tbody>
+{% for row in state.admission.comparison %}<tr><td>{{ row.policy }}</td><td class="num">{{ row['首场'] }}</td><td class="num">{{ row['当日'] }}</td><td class="mono">{{ row['第一场时点'] }}</td><td>{{ row['说明'] }}</td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+</div>
+<section class="panel">
+<div class="panel__head"><h2>迟到与冻结审计</h2><span>{{ state.admission.audit|length }} 条</span></div>
+{{ ledger(state.admission.audit) }}
+</section>
+<section class="panel">
+<div class="panel__head"><h2>称重证据账（原始证据不删除）</h2><span>{{ state.admission.evidence|length }} 条</span></div>
+{{ ledger(state.admission.evidence) }}
+</section>
+{% endblock %}
